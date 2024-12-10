@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const authenticateToken = require("../middlewares/auth");
-const UsersRole = require('../models/Users_Roles'); // Asegúrate de importar el modelo
+const UsersRole = require("../models/Users_Roles"); // Asegúrate de importar el modelo
 require("dotenv").config();
 
 const router = express.Router();
@@ -24,7 +24,15 @@ router.get("/users", authenticateToken, async (req, res) => {
 
 // Endpoint para crear un usuario
 router.post("/register", async (req, res) => {
-  const { username, password, email } = req.body;
+  const {
+    username,
+    password,
+    email,
+    firstName,
+    lastName,
+    dateOfBirth,
+    gender,
+  } = req.body;
 
   try {
     // Verificar si el usuario ya existe
@@ -33,11 +41,40 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "El usuario ya existe" });
     }
 
+    // Validar los datos obligatorios
+    if (
+      !username ||
+      !password ||
+      !email ||
+      !firstName ||
+      !lastName ||
+      !dateOfBirth ||
+      !gender
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Todos los campos son obligatorios" });
+    }
+
     // Crear un nuevo usuario
-    const newUser = new User({ username, password, email });
+    const newUser = new User({
+      username,
+      password,
+      email,
+      firstName,
+      lastName,
+      dateOfBirth,
+      gender,
+    });
+
+    // Guardar el usuario en la base de datos
     await newUser.save();
-    res.status(201).json({ message: "Usuario creado exitosamente" });
+
+    res
+      .status(201)
+      .json({ message: "Usuario creado exitosamente", user: newUser });
   } catch (error) {
+    console.error("Error al registrar usuario:", error);
     res.status(500).json({ message: "Error al registrar usuario", error });
   }
 });
@@ -66,18 +103,29 @@ router.post("/login", async (req, res) => {
         path: "permissions", // Poblar los permisos del rol
         populate: {
           path: "moduleId", // Poblar el módulo asociado al permiso
-          select: "name",
+          select: "name", // Solo traer el nombre del módulo
         },
       },
     });
 
     // Si no tiene un rol asignado
     if (!userRole) {
+      const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
+        expiresIn: "3h",
+      });
+
       return res.json({
         message: "Inicio de sesión exitoso",
-        token: jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
-          expiresIn: "3h",
-        }),
+        token,
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          dateOfBirth: user.dateOfBirth,
+          gender: user.gender,
+        },
         role: null, // Usuario sin rol
       });
     }
@@ -91,18 +139,23 @@ router.post("/login", async (req, res) => {
     }));
 
     // Generar un token JWT
-    const token = jwt.sign(
-      { id: user._id, username: user.username },
-      JWT_SECRET,
-      {
-        expiresIn: "3h",
-      }
-    );
+    const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
+      expiresIn: "3h",
+    });
 
-    // Responder con el token, rol y permisos
+    // Responder con el token, datos del usuario, rol y permisos
     res.json({
       message: "Inicio de sesión exitoso",
       token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        dateOfBirth: user.dateOfBirth,
+        gender: user.gender,
+      },
       role: {
         id: role._id,
         name: role.name,
@@ -119,7 +172,15 @@ router.post("/login", async (req, res) => {
 // Editar un usuario
 router.put("/users/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
-  const { username, email, password } = req.body;
+  const {
+    username,
+    email,
+    password,
+    firstName,
+    lastName,
+    dateOfBirth,
+    gender,
+  } = req.body;
 
   try {
     // Verificar si el usuario existe
@@ -131,6 +192,17 @@ router.put("/users/:id", authenticateToken, async (req, res) => {
     // Actualizar los datos del usuario
     if (username) user.username = username;
     if (email) user.email = email;
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (dateOfBirth) user.dateOfBirth = new Date(dateOfBirth); // Convertir la fecha a un objeto Date
+    if (gender) {
+      // Validar que el género sea uno de los permitidos
+      if (["Male", "Female", "Other"].includes(gender)) {
+        user.gender = gender;
+      } else {
+        return res.status(400).json({ message: "Género inválido" });
+      }
+    }
 
     // Si hay una contraseña nueva, encriptarla antes de actualizarla
     if (password) {
@@ -138,7 +210,9 @@ router.put("/users/:id", authenticateToken, async (req, res) => {
       user.password = await bcrypt.hash(password, salt);
     }
 
+    // Guardar los cambios en la base de datos
     await user.save();
+
     res.json({ message: "Usuario actualizado exitosamente", user });
   } catch (error) {
     console.error("Error al actualizar usuario:", error);

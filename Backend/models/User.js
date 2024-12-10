@@ -5,7 +5,11 @@ const UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  createdAt: { type: Date, default: Date.now }
+  firstName: { type: String, required: true }, // Nombre
+  lastName: { type: String, required: true },  // Apellido
+  dateOfBirth: { type: Date, required: true }, // Fecha de nacimiento
+  gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true }, // Género
+  createdAt: { type: Date, default: Date.now } // Fecha de creación
 });
 
 // Middleware para encriptar la contraseña antes de guardar
@@ -20,4 +24,4 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
-module.exports = mongoose.model('User', UserSchema,'Users');
+module.exports = mongoose.model('User', UserSchema, 'Users');

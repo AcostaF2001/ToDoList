@@ -1,0 +1,150 @@
+.page-login {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fae7e7;
+    .Container{
+        display: flex;
+        width: 75%;
+    }
+  
+    .visual-content {
+        position: relative;
+        background-size: cover;
+        color: white;
+        text-align: center;
+        width: 57%;
+        border-radius: 0 12px 12px 0px; /* Solo redondea la esquina inferior izquierda */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      
+        animation: changeBackground 15s infinite;
+      
+        .welcome-text {
+          position: relative;
+          top: 71%;
+          h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+          }
+      
+          p {
+            font-size: 1.2rem;
+            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+      
+      /* Animación para cambiar las imágenes */
+      @keyframes changeBackground {
+        0% {
+          background: url('../../assets/images/download.webp') no-repeat center center;
+        }
+        33% {
+          background: url('../../assets/images/Imagen2.webp') no-repeat center center;
+        }
+        66% {
+          background: url('../../assets/images/imagen3.webp') no-repeat center center;
+        }
+        100% {
+          background: url('../../assets/images/download.webp') no-repeat center center;
+        }
+      }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 0.75rem 1.25rem;
+        border-radius: 4px;
+        text-align: center;
+    }
+    
+  
+    .login-container {
+      background-color: #ffffff;
+      border-radius: 12px 0px 0px 12px;
+      .login-card {
+        padding: 2rem;
+        border-radius: 12px 0px 0px 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        height: 71vh;
+
+        .titulo-inicio{
+            margin-top: 30%;
+        }
+  
+        h2 {
+          font-size: 2rem;
+          font-weight: 600;
+          color: #2c3e50;
+        }
+  
+        .login-form {
+          .full-width {
+            width: 100%;
+          }
+  
+          mat-form-field {
+            margin-bottom: 1rem;
+          }
+  
+          .login-button {
+            width: 100%;
+            background-color: #e74c3c;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            &:hover {
+              background-color: #c0392b;
+            }
+          }
+
+        }
+      }
+    }
+  }
+  
+
+  mat-form-field {
+    .mat-icon-button {
+      margin-right: -12px; /* Ajusta la posición del botón */
+    }
+  
+    .mat-icon {
+      color: #757575; /* Cambia el color del ícono */
+    }
+  }
+  
+  .Copyright{
+    color: #999797;
+    font-size: 0.7rem;
+    position: relative;
+    top: 20%;
+    left: -40%;
+  }
+
+  .register-container{
+    margin-top: 3%;
+
+    .register{
+        color: #e74c3c !important;
+        font-size: 0.9rem;
+        text-decoration: none;
+    
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+  }
+
+  .input-color{
+    color: black !important;
+  }
+
+  .mdc-floating-label{
+    color: black !important;
+  }
+  
