@@ -4,6 +4,13 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv');
 const cors = require('cors');
 
+//Rutas para los EndPoints
+const authRoutes = require('./Routes/auth')
+const moduleRoutes = require('./Routes/modules')
+const PermissionsRoutes = require('./Routes/permissions')
+const roleRoutes = require('./Routes/roles');
+const usersRolesRoutes = require('./Routes/users_roles');
+
 
 // Configurar dotenv para leer variables del archivo .env
 dotenv.config();
@@ -12,11 +19,18 @@ dotenv.config();
 const app = express();
 
 //Configurar el Puerto
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 // Middleware para manejar JSON y CORS
 app.use(express.json());
 app.use(cors());
+
+// Registrar las rutas con sus prefijos
+app.use('/api/auth', authRoutes);  // Rutas relacionadas con autenticación
+app.use('/api/modules', moduleRoutes); //Rutas Relacionadas con Modulos
+app.use('/api/permissions', PermissionsRoutes); //Rutas Relacionadas con Permisos
+app.use('/api/roles', roleRoutes);//Rutas Relacionadas con Roles
+app.use('/api/users_roles', usersRolesRoutes);//Rutas Relacionadas con Roles
 
 // Obtener la URI de conexion desde el archivo .env
 const mongoURI = process.env.MONGO_URI;
