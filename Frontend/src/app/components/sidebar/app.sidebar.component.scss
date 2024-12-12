@@ -1,0 +1,28 @@
+.sidenav-container {
+    height: 100vh;
+    background-color: #f0cac4 !important;
+  }
+
+  .sidebar-header{
+    background-color: #f0cac4 !important;
+  }
+  
+  .sidenav {
+    width: 250px;
+    background-color: #f0cac4 !important;
+  }
+  
+  .toggle-button {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1000;
+  }
+
+  .sidebar-icons{
+    height: 21px;
+    width: 21px;
+    margin-right: 6%;
+  }
+  
+  

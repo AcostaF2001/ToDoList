@@ -1,0 +1,45 @@
+<div class="layout">
+    <!-- Botón para reabrir el sidebar -->
+    <button
+      mat-fab
+      class="toggle-sidebar-button"
+      *ngIf="!sidebarVisible"
+      (click)="toggleSidebar()"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  
+    <!-- Sidebar -->
+    <app-sidebar></app-sidebar>
+  
+    <!-- Ícono de perfil y menú -->
+    <div class="profile-container">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="profileMenu"
+        aria-label="Perfil de usuario"
+      >
+        <img
+          class="profile-picture"
+          [src]="profilePicture"
+          alt="Foto de perfil"
+        />
+      </button>
+      <mat-menu #profileMenu="matMenu">
+        <button mat-menu-item (click)="changeProfilePicture()">
+          <mat-icon>photo_camera</mat-icon>
+          <span>Change Picture</span>
+        </button>
+        <button mat-menu-item (click)="profileSettings()">
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+      </mat-menu>
+    </div>
+  
+    <!-- Contenido principal -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  

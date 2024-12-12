@@ -22,6 +22,31 @@ router.get("/users", authenticateToken, async (req, res) => {
   }
 });
 
+
+// Obtener la información de un usuario por ID desde un parámetro de consulta
+router.get("/user", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.query; // Extraer el id desde los parámetros de consulta
+
+    if (!id) {
+      return res.status(400).json({ message: "El parámetro 'id' es obligatorio" });
+    }
+
+    const user = await User.findById(id).select("-password"); // Buscar el usuario y excluir el campo password
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error al obtener el usuario:", error);
+    res.status(500).json({ message: "Error al obtener el usuario", error });
+  }
+});
+
+
+
 // Endpoint para crear un usuario
 router.post("/register", async (req, res) => {
   const {
@@ -31,6 +56,7 @@ router.post("/register", async (req, res) => {
     firstName,
     lastName,
     dateOfBirth,
+    profileImage,
     gender,
   } = req.body;
 
@@ -49,6 +75,7 @@ router.post("/register", async (req, res) => {
       !firstName ||
       !lastName ||
       !dateOfBirth ||
+      !profileImage ||
       !gender
     ) {
       return res
@@ -64,6 +91,7 @@ router.post("/register", async (req, res) => {
       firstName,
       lastName,
       dateOfBirth,
+      profileImage,
       gender,
     });
 
@@ -124,6 +152,7 @@ router.post("/login", async (req, res) => {
           firstName: user.firstName,
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
+          profileImage: user.profileImage,
           gender: user.gender,
         },
         role: null, // Usuario sin rol
@@ -154,6 +183,7 @@ router.post("/login", async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         dateOfBirth: user.dateOfBirth,
+        profileImage: user.profileImage,
         gender: user.gender,
       },
       role: {

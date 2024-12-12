@@ -1,0 +1,38 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      #sidenav
+      mode="side"
+      [(opened)]="isSidebarOpen"
+      class="sidenav"
+    >
+      <mat-toolbar class="sidebar-header">
+        <button mat-icon-button (click)="toggleSidebar()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>ToDo</span>
+      </mat-toolbar>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/home">
+          <mat-icon class="sidebar-icons">home</mat-icon>
+          <span class="sidebar-text">Home</span>
+        </a>
+        <a mat-list-item (click)="logout()">
+          <mat-icon class="sidebar-icons">logout</mat-icon>
+          <span class="sidebar-text">Log Out</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <!-- Botón para reabrir el sidebar -->
+      <button
+        mat-icon-button
+        class="toggle-button"
+        *ngIf="!isSidebarOpen"
+        (click)="toggleSidebar()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

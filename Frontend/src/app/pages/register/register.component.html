@@ -2,6 +2,16 @@
     <div class="register-container">
         <mat-card class="register-card">
             <h2 class="text-center">Register</h2>
+            <!-- Círculo para subir la imagen -->
+            <div class="profile-upload-container">
+                <label for="profileImageInput" class="profile-circle">
+                    <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile Image"
+                        class="profile-image-preview" />
+                    <mat-icon *ngIf="!profileImageUrl">person</mat-icon>
+                </label>
+                <input id="profileImageInput" type="file" (change)="onProfileImageChange($event)" hidden />
+            </div>
+
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
                 <!-- First Name -->
                 <mat-form-field appearance="outline" class="full-width">
