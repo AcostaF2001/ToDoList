@@ -27,6 +27,7 @@ export class AuthService {
           firstName: user.firstName,
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
+          profileImage: user.profileImage,
           gender: user.gender
         })
       );

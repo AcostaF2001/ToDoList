@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
   lastName: { type: String, required: true },  // Apellido
   dateOfBirth: { type: Date, required: true }, // Fecha de nacimiento
   gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true }, // Género
+  profileImage: { type: String, default: '' }, // Enlace de la imagen de perfil,
   createdAt: { type: Date, default: Date.now } // Fecha de creación
 });
 

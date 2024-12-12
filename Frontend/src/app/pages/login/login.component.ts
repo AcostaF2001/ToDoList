@@ -44,7 +44,7 @@ export class LoginComponent {
                 console.log("Inicio de sesion existoso",response)
 
                 // Redirigir al usuario a la página principal o dashboard
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/home']);
             } catch (error: any) {
                 // Manejar el error basado en el código de estado
                 if (error.status === 401) {
