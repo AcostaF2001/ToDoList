@@ -1,3 +1,8 @@
-<div class="page-home">
-    <p>Hello World</p>
-</div>
+<div class="page-home" *ngIf="showContent" [@fadeOutContainer]>
+    <h1 class="title" [@fadeInTitle]="'in'">Welcome to your To-Do List!</h1>
+    <h2 class="username" [@fadeInUsername]="'in'">{{ username }}</h2>
+    <button class="scroll-button" *ngIf="showButton" [@fadeInButton]="'in'" (click)="navigateToToDo()">
+      <mat-icon class="arrow-icon">keyboard_arrow_down</mat-icon>
+    </button>
+  </div>
+  

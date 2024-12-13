@@ -3,6 +3,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AppLayoutComponent } from './components/layout/app.layout.component';
+import { ToDoComponent } from './components/to-do/to-do.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' }, // Redirige al Login por defecto
@@ -13,6 +14,7 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       { path: 'home', component: HomeComponent },
+      { path: 'to-do', component: ToDoComponent },
       // Aquí puedes agregar más rutas protegidas
     ],
   },
