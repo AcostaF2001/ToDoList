@@ -36,25 +36,36 @@ app.use('/api/users_roles', usersRolesRoutes);//Rutas Relacionadas con Roles
 app.use('/api/upload', uploadRoutes);//Rutas Relacionadas con Subir Imagenes
 app.use('/api/todo', Todo);//Rutas Relacionadas con el toDo List
 
+// Ruta base
+app.get('/', (req, res) => {
+    res.status(200).json({ message: '!Backend Funcionando Correctamente!' });
+});
+
+// Middleware para manejar rutas no encontradas
+app.use((req, res) => {
+    res.status(404).json({ message: 'Ruta no encontrada' });
+});
+
 
 // Obtener la URI de conexion desde el archivo .env
 const mongoURI = process.env.MONGO_URI;
 
 // Conectar a MongoDB
 mongoose
-  .connect(mongoURI)
-  .then(() => console.log('Conexión exitosa a MongoDB'))
-  .catch((error) => {
-      console.error('Error al conectar a MongoDB:', error);
-      process.exit(1); // Finaliza el proceso si no se puede conectar
-  });
+    .connect(mongoURI)
+    .then(() => console.log('Conexión exitosa a MongoDB'))
+    .catch((error) => {
+        console.error('Error al conectar a MongoDB:', error);
+        process.exit(1); // Finaliza el proceso si no se puede conectar
+    });
 
-//Rutas Base (puedes modularizarlas)
-app.get('/', (req,res) => {
-    res.send('!Backend Funcionando Correctamente!')
-})
 
-// Inicar el servidor
-app.listen(PORT,() =>{
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-})
+// Iniciar el servidor (solo si no se ejecuta en pruebas)
+if (require.main === module) {
+    app.listen(PORT, () => {
+      console.log(`Servidor corriendo en el puerto ${PORT}`);
+    });
+  }
+  
+// Exportar la aplicación para las pruebas
+module.exports = app;
