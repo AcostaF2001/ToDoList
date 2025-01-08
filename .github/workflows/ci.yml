@@ -1,0 +1,60 @@
+name: CI for Develop Branch
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  test-and-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Descarga todas las ramas remotas para permitir el merge
+
+      # 2. Configurar Node.js para el backend
+      - name: Setup Node.js for Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # 3. Configurar variables de entorno
+      - name: Set environment variables
+        run: echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> $GITHUB_ENV
+
+      # 4. Instalar dependencias para el backend
+      - name: Install Backend dependencies
+        working-directory: ./Backend
+        run: npm install
+
+      # 5. Ejecutar pruebas para el backend
+      - name: Run Backend tests
+        working-directory: ./Backend
+        env:
+          NODE_ENV: test
+        run: npm test
+
+      # FRONTEND
+      - name: Setup Node.js for Frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Frontend dependencies
+        working-directory: ./Frontend
+        run: npm install
+
+      # Merge a main
+      - name: Merge to main
+        if: success()
+        run: |
+          git config --global user.name "AcostaF2001"
+          git config --global user.email "a.felipeal@hotmail.com"
+          git checkout main
+          git pull origin main
+          git merge develop
+          git push origin main

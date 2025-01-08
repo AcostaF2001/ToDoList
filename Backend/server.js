@@ -10,7 +10,7 @@ const moduleRoutes = require('./Routes/modules')
 const PermissionsRoutes = require('./Routes/permissions')
 const roleRoutes = require('./Routes/roles');
 const usersRolesRoutes = require('./Routes/users_roles');
-const uploadRoutes = require('./Routes/Upload');
+const uploadRoutes = require('./Routes/upload');
 const Todo = require('./Routes/todo')
 
 
