@@ -46,13 +46,13 @@ jobs:
         working-directory: ./Frontend
         run: npm install
 
-
+      # Merge a main
       - name: Merge to main
         if: success()
         run: |
           git config --global user.name "AcostaF2001"
           git config --global user.email "a.felipeal@hotmail.com"
-          git checkout main
+          git checkout main  # Asegúrate de que 'main' exista
           git pull origin main
           git merge develop
           git push origin main
