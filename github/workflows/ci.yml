@@ -1,0 +1,67 @@
+name: CI for Develop Branch
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  test-and-merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # BACKEND
+      # 2. Configurar Node.js para el backend
+      - name: Setup Node.js for Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # 3. Instalar dependencias para el backend
+      - name: Install Backend dependencies
+        working-directory: ./Backend
+        run: npm install
+
+      # 4. Ejecutar pruebas para el backend
+      - name: Run Backend tests
+        working-directory: ./Backend
+        env:
+          NODE_ENV: test # Configurar el entorno de prueba
+        run: npm test
+
+      # FRONTEND
+      # 5. Configurar Node.js para el frontend
+      - name: Setup Node.js for Frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # 6. Instalar dependencias para el frontend
+      - name: Install Frontend dependencies
+        working-directory: ./Frontend
+        run: npm install
+
+      # 7. Ejecutar pruebas para el frontend
+      - name: Run Frontend tests
+        working-directory: ./Frontend
+        run: npm test
+
+      # 8. Build del frontend
+      - name: Build Frontend
+        working-directory: ./Frontend
+        run: npm run build
+
+      # MERGE (si ambas pruebas pasan)
+      - name: Merge to master
+        if: success() # Solo si todo es exitoso
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git checkout master
+          git pull origin master
+          git merge develop
+          git push origin master
