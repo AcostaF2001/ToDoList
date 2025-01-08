@@ -13,6 +13,8 @@ jobs:
       # 1. Checkout del código
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Descarga todas las ramas remotas para permitir el merge
 
       # 2. Configurar Node.js para el backend
       - name: Setup Node.js for Backend
@@ -52,7 +54,7 @@ jobs:
         run: |
           git config --global user.name "AcostaF2001"
           git config --global user.email "a.felipeal@hotmail.com"
-          git checkout main  # Asegúrate de que 'main' exista
+          git checkout main
           git pull origin main
           git merge develop
           git push origin main
