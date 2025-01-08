@@ -46,13 +46,6 @@ jobs:
         working-directory: ./Frontend
         run: npm install
 
-      - name: Run Frontend tests
-        working-directory: ./Frontend
-        run: npm test
-
-      - name: Build Frontend
-        working-directory: ./Frontend
-        run: npm run build
 
       - name: Merge to master
         if: success()

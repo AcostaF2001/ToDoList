@@ -3,12 +3,14 @@ import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { MatIcon } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [MatIcon, NgIf],
+  imports: [MatIcon, NgIf, CommonModule],
   animations: [
     // Animación para el título
     trigger('fadeInTitle', [
