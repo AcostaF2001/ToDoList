@@ -139,7 +139,7 @@ router.post("/login", async (req, res) => {
     // Si no tiene un rol asignado
     if (!userRole) {
       const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
-        expiresIn: "3h",
+        expiresIn: "10h",
       });
 
       return res.json({
