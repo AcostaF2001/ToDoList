@@ -11,6 +11,7 @@ const PermissionsRoutes = require('./Routes/permissions')
 const roleRoutes = require('./Routes/roles');
 const usersRolesRoutes = require('./Routes/users_roles');
 const uploadRoutes = require('./Routes/Upload');
+const Todo = require('./Routes/todo')
 
 
 // Configurar dotenv para leer variables del archivo .env
@@ -33,6 +34,8 @@ app.use('/api/permissions', PermissionsRoutes); //Rutas Relacionadas con Permiso
 app.use('/api/roles', roleRoutes);//Rutas Relacionadas con Roles
 app.use('/api/users_roles', usersRolesRoutes);//Rutas Relacionadas con Roles
 app.use('/api/upload', uploadRoutes);//Rutas Relacionadas con Subir Imagenes
+app.use('/api/todo', Todo);//Rutas Relacionadas con el toDo List
+
 
 // Obtener la URI de conexion desde el archivo .env
 const mongoURI = process.env.MONGO_URI;
