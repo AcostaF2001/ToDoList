@@ -47,12 +47,12 @@ jobs:
         run: npm install
 
 
-      - name: Merge to master
+      - name: Merge to main
         if: success()
         run: |
           git config --global user.name "AcostaF2001"
           git config --global user.email "a.felipeal@hotmail.com"
-          git checkout master
-          git pull origin master
+          git checkout main
+          git pull origin main
           git merge develop
-          git push origin master
+          git push origin main
