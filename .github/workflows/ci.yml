@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js for Backend
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
 
       # 3. Configurar variables de entorno
       - name: Set environment variables
@@ -40,7 +40,7 @@ jobs:
       - name: Setup Node.js for Frontend
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install Frontend dependencies
         working-directory: ./Frontend
