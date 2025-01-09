@@ -1,0 +1,39 @@
+.small-width {
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 0.875rem; /* Tamaño de fuente más pequeño */
+  }
+  
+  .checkbox-group {
+    display: flex;
+    margin: 1rem 0;
+    font-size: 0.875rem; /* Tamaño de fuente más pequeño */
+  }
+  
+  .objective-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  
+    mat-form-field {
+      flex: 1;
+      font-size: 0.875rem; /* Tamaño de fuente más pequeño */
+    }
+  }
+  
+  .subtitle {
+    margin: 2rem 0 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .add-objective-text{
+    font-size: 0.875rem;
+  }
+  

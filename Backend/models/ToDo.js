@@ -8,7 +8,7 @@ const ToDoSchema = new mongoose.Schema({
     enum: ['completado', 'avanzado', 'no iniciado'], 
     required: true 
   },
-  Name: { type: String, required: true }, // Breve descripción de la tarea
+  name: { type: String, required: true }, // Nombre de la tarea
   descripcion: { type: String, required: true }, // Breve descripción de la tarea
   fechaCreacion: { type: Date, default: Date.now }, // Fecha en que se creó
   fechaRealizacion: { type: Date }, // Fecha límite para realizar la tarea (opcional)
@@ -25,4 +25,4 @@ const ToDoSchema = new mongoose.Schema({
 });
 
 // Exportar el esquema ya creado
-module.exports = mongoose.model('ToDo', ToDoSchema, 'ToDos');
+module.exports = mongoose.model('ToDo', ToDoSchema, 'ToDo');
