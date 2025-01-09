@@ -4,12 +4,17 @@ const authenticateToken = require("../middlewares/auth");
 
 const router = express.Router();
 
-// Obtener todas las tareas (con filtro por nombre y estado)
+// Obtener todas las tareas (con filtro por nombre, estado y idUsuario obligatorio)
 router.get("/", authenticateToken, async (req, res) => {
-  const { name, estado } = req.query; // Filtros opcionales
+  const { idUsuario, name, estado } = req.query; // Filtros opcionales y obligatorio
+
+  if (!idUsuario) {
+    return res.status(400).json({ message: "El parámetro idUsuario es obligatorio." });
+  }
 
   try {
-    const filter = {};
+    const filter = { idUsuario }; // Filtro base para el idUsuario
+
     if (name) {
       filter.name = { $regex: name, $options: "i" }; // Búsqueda insensible a mayúsculas
     }
@@ -17,7 +22,7 @@ router.get("/", authenticateToken, async (req, res) => {
       filter.estado = estado;
     }
 
-    const todos = await ToDo.find(filter);
+    const todos = await ToDo.find(filter); // Busca tareas que coincidan con los filtros
     res.json(todos); // Retorna las tareas filtradas
   } catch (error) {
     console.error("Error al obtener tareas:", error);

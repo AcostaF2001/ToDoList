@@ -1,0 +1,79 @@
+<h1 mat-dialog-title>Crea una nueva tarea</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="taskForm">
+    <!-- Nombre de la tarea -->
+    <mat-form-field appearance="outline" class="small-width">
+      <mat-label>Nombre de la tarea</mat-label>
+      <input matInput formControlName="name" placeholder="Ingrese el nombre de la tarea" required />
+      <mat-error *ngIf="taskForm.get('name')?.hasError('required')">
+        El nombre de la tarea es obligatorio.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Descripción de la tarea -->
+    <mat-form-field appearance="outline" class="small-width">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion" placeholder="Ingrese la descripción" required></textarea>
+      <mat-error *ngIf="taskForm.get('descripcion')?.hasError('required')">
+        La descripción es obligatoria.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Selección de fechas -->
+    <div class="checkbox-group">
+      <mat-checkbox [checked]="useDateRange" (change)="toggleDateRange()">Rango de fechas</mat-checkbox>
+      <mat-checkbox [checked]="!useDateRange" (change)="toggleDateRange()">Fecha específica</mat-checkbox>
+    </div>
+
+    <!-- Día específico -->
+    <div *ngIf="!useDateRange">
+      <mat-form-field appearance="outline" class="small-width">
+        <mat-label>Fecha de finalización</mat-label>
+        <input matInput formControlName="fechaRealizacion" [matDatepicker]="picker1" placeholder="Seleccione una fecha" />
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Rango de fechas -->
+    <div *ngIf="useDateRange" formGroupName="lapsoDeTiempo">
+      <mat-form-field appearance="outline" class="small-width">
+        <mat-label>Inicio</mat-label>
+        <input matInput formControlName="inicio" [matDatepicker]="picker2" placeholder="Fecha de inicio" />
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="small-width">
+        <mat-label>Fin</mat-label>
+        <input matInput formControlName="fin" [matDatepicker]="picker3" placeholder="Fecha de fin" />
+        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Subtítulo para objetivos -->
+    <h2 class="subtitle">Objetivos</h2>
+
+    <!-- Lista de objetivos -->
+    <div formArrayName="objetivos">
+        <div *ngFor="let objective of objetivos.controls; let i = index" [formGroupName]="i" class="objective-item">
+          <mat-form-field appearance="outline" class="small-width">
+            <mat-label>Descripción del objetivo</mat-label>
+            <input matInput formControlName="descripcion" placeholder="Ingrese el objetivo" />
+          </mat-form-field>
+          <button mat-icon-button color="warn" (click)="removeObjective(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <button mat-icon-button color="primary" (click)="addObjective()">
+          <mat-icon>add</mat-icon><span class="add-objective-text">Añadir objetivo</span>
+        </button>
+      </div>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="submitTask()">Crear Tarea</button>
+</div>

@@ -1,4 +1,22 @@
 <div class="to-do-page">
-    <h1>Your To-Do List</h1>
+    <!-- Mostrar el título solo si es necesario -->
+    <div>
+        <h1 *ngIf="showTitle">{{ title }}</h1>
+        <!-- Botón debajo del título -->
+        <button *ngIf="showTitle" mat-raised-button color="primary" (click)="createNewTask()">
+            Crea tu primera tarea
+        </button>
+    </div>
+
+    <!-- Mostrar tareas si existen -->
+    <ul *ngIf="todos.length > 0">
+        <li *ngFor="let todo of todos">
+            {{ todo.name }} - {{ todo.estado }}
+        </li>
+    </ul>
+
+    <!-- Botón flotante circular -->
+    <button *ngIf="todos.length > 0" mat-fab color="accent" class="floating-button" (click)="createNewTask()">
+        <mat-icon>add</mat-icon>
+    </button>
 </div>
-  

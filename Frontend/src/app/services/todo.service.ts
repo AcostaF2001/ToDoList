@@ -5,17 +5,27 @@ import axiosInstance from './axios.config';
   providedIn: 'root',
 })
 export class TodoService {
+  private readonly baseUrl = '/todo'; // Base URL para los endpoints de tareas
+
   constructor() {}
 
   /**
    * Obtiene todas las tareas con filtros opcionales por nombre y estado.
-   * @param filters Objeto con los filtros opcionales (name y estado).
+   * @param idUsuario ID del usuario (obligatorio).
+   * @param filters Filtros opcionales (name y estado).
    * @returns Promesa con la lista de tareas.
    */
-  async getTodos(filters?: { name?: string; estado?: string }): Promise<any[]> {
+  async getTodos(
+    idUsuario: string,
+    filters?: { name?: string; estado?: string }
+  ): Promise<any[]> {
+    if (!idUsuario) {
+      throw new Error('El ID del usuario (idUsuario) es obligatorio.');
+    }
+
     try {
-      const params = new URLSearchParams(filters as any).toString();
-      const response = await axiosInstance.get(`/todo?${params}`);
+      const params = new URLSearchParams({ idUsuario, ...filters } as any).toString();
+      const response = await axiosInstance.get(`${this.baseUrl}?${params}`);
       return response.data;
     } catch (error: any) {
       console.error('Error al obtener las tareas:', error.response?.data || error.message);
@@ -25,7 +35,7 @@ export class TodoService {
 
   /**
    * Crea una nueva tarea.
-   * @param todoData Objeto con los datos de la tarea (idUsuario, name, descripcion, etc.).
+   * @param todoData Datos de la tarea.
    * @returns Promesa con la tarea creada.
    */
   async createTodo(todoData: {
@@ -37,7 +47,7 @@ export class TodoService {
     objetivos?: { descripcion: string; completado?: boolean }[];
   }): Promise<any> {
     try {
-      const response = await axiosInstance.post('/todo', todoData);
+      const response = await axiosInstance.post(this.baseUrl, todoData);
       return response.data;
     } catch (error: any) {
       console.error('Error al crear la tarea:', error.response?.data || error.message);
@@ -48,12 +58,19 @@ export class TodoService {
   /**
    * Actualiza una tarea existente.
    * @param id ID de la tarea a actualizar.
-   * @param todoData Objeto con los datos actualizados de la tarea.
+   * @param todoData Datos actualizados de la tarea.
    * @returns Promesa con la tarea actualizada.
    */
-  async updateTodo(id: string, todoData: any): Promise<any> {
+  async updateTodo(id: string, todoData: Partial<{
+    name: string;
+    descripcion: string;
+    estado: string;
+    fechaRealizacion?: Date;
+    lapsoDeTiempo?: { inicio?: Date; fin?: Date };
+    objetivos?: { descripcion: string; completado?: boolean }[];
+  }>): Promise<any> {
     try {
-      const response = await axiosInstance.put(`/todo/${id}`, todoData);
+      const response = await axiosInstance.put(`${this.baseUrl}/${id}`, todoData);
       return response.data;
     } catch (error: any) {
       console.error('Error al actualizar la tarea:', error.response?.data || error.message);
@@ -62,13 +79,13 @@ export class TodoService {
   }
 
   /**
-   * Elimina una tarea por su ID.
-   * @param id ID de la tarea a eliminar.
+   * Elimina una tarea por ID.
+   * @param id ID de la tarea.
    * @returns Promesa con la respuesta del servidor.
    */
   async deleteTodo(id: string): Promise<any> {
     try {
-      const response = await axiosInstance.delete(`/todo/${id}`);
+      const response = await axiosInstance.delete(`${this.baseUrl}/${id}`);
       return response.data;
     } catch (error: any) {
       console.error('Error al eliminar la tarea:', error.response?.data || error.message);
@@ -84,7 +101,7 @@ export class TodoService {
    */
   async changeTodoState(id: string, estado: string): Promise<any> {
     try {
-      const response = await axiosInstance.patch(`/todo/${id}/estado`, { estado });
+      const response = await axiosInstance.patch(`${this.baseUrl}/${id}/estado`, { estado });
       return response.data;
     } catch (error: any) {
       console.error('Error al cambiar el estado de la tarea:', error.response?.data || error.message);
@@ -95,7 +112,7 @@ export class TodoService {
   /**
    * Actualiza los objetivos de una tarea.
    * @param id ID de la tarea.
-   * @param objetivos Lista de objetivos a actualizar.
+   * @param objetivos Objetivos actualizados.
    * @returns Promesa con la tarea actualizada.
    */
   async updateTodoObjectives(
@@ -103,11 +120,11 @@ export class TodoService {
     objetivos: { descripcion: string; completado?: boolean }[]
   ): Promise<any> {
     try {
-      const response = await axiosInstance.patch(`/todo/${id}/objetivos`, { objetivos });
+      const response = await axiosInstance.patch(`${this.baseUrl}/${id}/objetivos`, { objetivos });
       return response.data;
     } catch (error: any) {
-      console.error('Error al actualizar los objetivos de la tarea:', error.response?.data || error.message);
-      throw new Error('Error al actualizar los objetivos de la tarea');
+      console.error('Error al actualizar los objetivos:', error.response?.data || error.message);
+      throw new Error('Error al actualizar los objetivos');
     }
   }
 }
