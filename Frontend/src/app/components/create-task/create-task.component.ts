@@ -56,6 +56,14 @@ export class CreateTaskComponent {
   useDateRange: boolean = false; // Controla si el usuario elige un rango de fechas
   addObjectives: boolean = false; // Controla si el usuario añade objetivos
 
+/**
+ * Constructor de la clase CreateTaskComponent.
+ *
+ * @param fb Form builder
+ * @param todoService Servicio de tareas
+ * @param dialogRef Referencia al diálogo
+ * @param data Datos opcionales pasados al modal
+ */
   constructor(
     private fb: FormBuilder,
     private todoService: TodoService,

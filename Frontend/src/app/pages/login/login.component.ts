@@ -31,10 +31,22 @@ export class LoginComponent {
         });
     }
 
+    /**
+     * Alterna la visibilidad de la contraseña entre true y false
+     * dependiendo del estado actual
+     */
     togglePasswordVisibility(): void {
         this.hidePassword = !this.hidePassword; // Alternar entre true y false
       }
 
+
+    /**
+     * Maneja el envío del formulario de inicio de sesión.
+     *
+     * Llama al método `login` del servicio `AuthService` con los valores del formulario.
+     * Si el inicio de sesión es exitoso, redirige al usuario a la página principal o dashboard.
+     * Si ocurre un error, muestra un mensaje de error en la interfaz.
+     */
     async onSubmit() {
         if (this.loginForm.valid) {
             const { username, password } = this.loginForm.value;

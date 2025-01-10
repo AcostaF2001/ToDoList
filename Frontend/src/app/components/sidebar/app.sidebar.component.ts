@@ -28,11 +28,19 @@ export class AppSidebarComponent {
     isSidebarOpen = false;
 
     // Inyección de Router en el constructor
-    constructor(private router: Router) {}
+    constructor(private router: Router) { }
 
+    /**
+     * Toggles the sidebar open or closed
+     */
     toggleSidebar() {
         this.isSidebarOpen = !this.isSidebarOpen;
     }
+
+    /**
+     * Logs out the current user by clearing the local storage and 
+     * redirecting to the login component.
+     */
 
     logout() {
         // Limpia el localStorage
