@@ -7,7 +7,7 @@ import axiosInstance from './axios.config';
 export class TodoService {
   private readonly baseUrl = '/todo'; // Base URL para los endpoints de tareas
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Obtiene todas las tareas con filtros opcionales por nombre y estado.
@@ -125,6 +125,32 @@ export class TodoService {
     } catch (error: any) {
       console.error('Error al actualizar los objetivos:', error.response?.data || error.message);
       throw new Error('Error al actualizar los objetivos');
+    }
+  }
+
+  /**
+   * Actualiza las posiciones de las tareas de un usuario.
+   * @param idUsuario ID del usuario.
+   * @param tasks Lista de tareas con sus nuevas posiciones.
+   * @returns Promesa con la respuesta del servidor.
+   */
+  async updateTaskPositions(
+    idUsuario: string,
+    tasks: { id: string; positionx: number; positiony: number }[] // Unificar propiedades con mayúsculas
+  ): Promise<any> {
+    if (!idUsuario || !tasks || tasks.length === 0) {
+      throw new Error('El ID del usuario y las tareas son obligatorios.');
+    }
+
+    try {
+      const response = await axiosInstance.put(`${this.baseUrl}/order`, {
+        idUsuario,
+        tasks, // No necesitas mapear las propiedades porque ya están en el formato correcto
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('Error al actualizar las posiciones de las tareas:', error.response?.data || error.message);
+      throw new Error('Error al actualizar las posiciones de las tareas');
     }
   }
 }

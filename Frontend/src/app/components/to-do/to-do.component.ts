@@ -7,15 +7,19 @@ import { CreateTaskComponent } from '../create-task/create-task.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
+import { TaskCardComponent } from '../task-card/task-card.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 
 @Component({
   selector: 'app-to-do',
   templateUrl: './to-do.component.html',
   standalone: true, // Indica que este componente es standalone
-  imports: [CommonModule, MatButtonModule,MatDialogModule,MatDatepickerModule,MatNativeDateModule,MatIcon],
-  providers: [  
+  imports: [CommonModule, MatButtonModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatIcon, TaskCardComponent, DragDropModule],
+  providers: [
     MatDatepickerModule,
-    MatNativeDateModule  
+    MatNativeDateModule
   ],
   styleUrls: ['./to-do.component.scss'],
 })
@@ -24,7 +28,21 @@ export class ToDoComponent implements OnInit {
   title: string = ''; // Título dinámico
   showTitle: boolean = true; // Controla si se muestra el título o no
 
-  constructor(private todoService: TodoService,private dialog: MatDialog) { }
+  constructor(private todoService: TodoService, private dialog: MatDialog) { }
+
+  // Método para obtener el ID del usuario
+  private getUserId(): string | null {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        return user?.id || null;
+      } catch (error) {
+        console.error('Error al parsear los datos del usuario:', error);
+      }
+    }
+    return null;
+  }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -61,6 +79,28 @@ export class ToDoComponent implements OnInit {
     } catch (error) {
       console.error('Error al cargar las tareas:', error);
     }
+  }
+
+  onDragEnd(event: any, task: any): void {
+    const { x, y } = event.source.getFreeDragPosition();
+    task.positionx = x;
+    task.positiony = y;
+
+    // Guardar los cambios en el backend
+    const userId = this.getUserId();
+    if (!userId) {
+      console.error('El ID del usuario no está disponible.');
+      return;
+    }
+
+    this.todoService
+      .updateTaskPositions(userId, this.todos.map(t => ({ id: t._id, positionx: t.positionx, positiony: t.positiony })))
+      .then(() => {
+        console.log('Posiciones actualizadas correctamente.');
+      })
+      .catch(error => {
+        console.error('Error al actualizar posiciones:', error);
+      });
   }
 
   createNewTask(): void {

@@ -1,6 +1,8 @@
 const express = require("express");
 const ToDo = require("../models/ToDo");
 const authenticateToken = require("../middlewares/auth");
+const mongoose = require('mongoose');
+
 
 const router = express.Router();
 
@@ -43,6 +45,8 @@ router.post("/", authenticateToken, async (req, res) => {
       fechaRealizacion,
       lapsoDeTiempo,
       objetivos,
+      positionx: null,
+      positiony: null // Inicializar posición como null
     });
 
     await newToDo.save();
@@ -52,6 +56,35 @@ router.post("/", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Error al crear tarea", error });
   }
 });
+
+// Actualizar posiciones de tareas
+router.put("/order", authenticateToken, async (req, res) => {
+  const { idUsuario, tasks } = req.body;
+
+  try {
+    if (!idUsuario || !Array.isArray(tasks)) {
+      return res.status(400).json({ message: "Datos inválidos." });
+    }
+
+    for (const task of tasks) {
+      if (!mongoose.Types.ObjectId.isValid(task.id)) {
+        return res.status(400).json({ message: `El ID de tarea ${task.id} no es válido.` });
+      }
+    }
+
+    const updatePromises = tasks.map(task =>
+      ToDo.findByIdAndUpdate(task.id, { positionx: task.positionx, positiony: task.positiony })
+    );
+
+    await Promise.all(updatePromises);
+
+    res.status(200).json({ message: "Posiciones actualizadas correctamente." });
+  } catch (error) {
+    console.error("Error al actualizar posiciones:", error);
+    res.status(500).json({ message: "Error al actualizar posiciones.", error });
+  }
+});
+
 
 // Editar una tarea
 router.put("/:id", authenticateToken, async (req, res) => {
@@ -139,5 +172,8 @@ router.patch("/:id/objetivos", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Error al actualizar objetivos de la tarea", error });
   }
 });
+
+
+
 
 module.exports = router;
