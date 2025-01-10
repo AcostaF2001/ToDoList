@@ -9,12 +9,13 @@
     </div>
 
     <!-- Mostrar tareas si existen -->
-    <ul *ngIf="todos.length > 0">
-        <li *ngFor="let todo of todos">
-            {{ todo.name }} - {{ todo.estado }}
-        </li>
-    </ul>
-
+    <div class="task-cards" *ngIf="todos.length > 0">
+        <div *ngFor="let todo of todos" class="task-card-wrapper" cdkDrag
+            [cdkDragFreeDragPosition]="{ x: todo.positionx || 0, y: todo.positiony || 0 }"
+            (cdkDragEnded)="onDragEnd($event, todo)">
+            <app-task-card [task]="todo"></app-task-card>
+        </div>
+    </div>
     <!-- Botón flotante circular -->
     <button *ngIf="todos.length > 0" mat-fab color="accent" class="floating-button" (click)="createNewTask()">
         <mat-icon>add</mat-icon>

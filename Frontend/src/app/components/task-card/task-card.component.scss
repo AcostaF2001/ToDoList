@@ -1,0 +1,54 @@
+.task-card {
+    background-color: #fef3c7; /* Color tipo post-it */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 250px;
+    padding: 1rem;
+    margin: 1rem auto;
+    position: relative;
+    font-family: 'Arial', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+
+    .subtitle {
+        margin-top: 7%;
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: left;
+      }
+
+    .task-name {
+      margin-top: 5%;
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  
+    h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.2rem;
+      color: #333;
+    }
+  
+    p {
+      font-size: 1rem;
+      text-align: left;
+      color: #555;
+      margin-bottom: 20%;
+    }
+  
+    .task-status {
+      font-size: 0.9rem;
+      color: #888;
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+    }
+  
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+  }
+  

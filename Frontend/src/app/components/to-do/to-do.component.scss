@@ -7,6 +7,11 @@
   min-height: 100vh;
   font-size: 2rem;
 
+  .task-card-wrapper {
+    cursor: grab; /* Cambia el cursor para indicar que se puede arrastrar */
+    overflow: hidden; /* Elimina scrolls */
+  }
+
   h1 {
     margin-bottom: 1rem;
   }

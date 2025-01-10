@@ -21,7 +21,9 @@ const ToDoSchema = new mongoose.Schema({
       descripcion: { type: String, required: true }, // Descripción del objetivo
       completado: { type: Boolean, default: false } // Estado del objetivo (completado o no)
     }
-  ]
+  ],
+  positionx: { type: Number, default: null },
+  positiony: { type: Number, default: null } // Posición de la tarea, inicializa en null
 });
 
 // Exportar el esquema ya creado
