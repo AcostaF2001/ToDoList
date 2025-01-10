@@ -49,6 +49,13 @@ export class AuthService {
     }
   }
 
+  /**
+   * Registers a new user with the provided user data.
+   * @param userData - The data of the user to be registered.
+   * @returns A promise that resolves with the response data from the registration request.
+   * @throws Will throw an error if the registration request fails.
+   */
+
   async register(userData: any): Promise<any> {
     try {
       const response = await axiosInstance.post('/auth/register', userData);

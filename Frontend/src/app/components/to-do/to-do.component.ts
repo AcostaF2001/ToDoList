@@ -25,7 +25,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 })
 export class ToDoComponent implements OnInit {
   todos: any[] = []; // Lista de tareas
-  title: string = ''; // Título dinámico
+  title: string = 'Your To-Do List'; // Título dinámico
   showTitle: boolean = true; // Controla si se muestra el título o no
 
   constructor(private todoService: TodoService, private dialog: MatDialog) { }
@@ -44,6 +44,13 @@ export class ToDoComponent implements OnInit {
     return null;
   }
 
+  /**
+   * Inicializa el componente cargando las tareas del usuario actual desde el servicio de tareas.
+   * Si no se encuentra el ID del usuario en el localStorage, se muestra un mensaje de error.
+   * Si la lista de tareas está vacía, se muestra el título con un mensaje personalizado.
+   * Si se encuentran tareas, se oculta el título.
+   * @returns {Promise<void>} Promesa que se resuelve cuando se carga la lista de tareas.
+   */
   async ngOnInit(): Promise<void> {
     try {
       // Obtener el idUsuario desde el localStorage
@@ -81,6 +88,12 @@ export class ToDoComponent implements OnInit {
     }
   }
 
+/**
+ * Maneja el fin del drag de una tarea y actualiza la posición
+ * en el backend.
+ * @param event Evento de drag-and-drop.
+ * @param task Tarea que se está moviendo.
+ */
   onDragEnd(event: any, task: any): void {
     const { x, y } = event.source.getFreeDragPosition();
     task.positionx = x;
@@ -102,6 +115,13 @@ export class ToDoComponent implements OnInit {
         console.error('Error al actualizar posiciones:', error);
       });
   }
+
+/**
+ * Opens a dialog for creating a new task. Once the dialog is closed,
+ * it checks whether the task creation was successful. If successful,
+ * it logs a success message and reloads the tasks by invoking `ngOnInit`.
+ * If the task creation is canceled, it logs a cancellation message.
+ */
 
   createNewTask(): void {
     const dialogRef = this.dialog.open(CreateTaskComponent, {

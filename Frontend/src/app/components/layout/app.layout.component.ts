@@ -17,6 +17,11 @@ export class AppLayoutComponent {
   sidebarVisible = true;
   profilePicture = 'assets/default-profile.png';
 
+  /**
+   * Inicializa la componente y actualiza la imagen de perfil
+   * con la información almacenada en el localStorage.
+   * Si no hay información, se muestra la imagen predeterminada.
+   * */
   ngOnInit() {
     // Obtener la información del usuario desde el localStorage
     const userData = localStorage.getItem('user');
@@ -34,15 +39,26 @@ export class AppLayoutComponent {
     }
   }
 
+  /**
+   * Alterna el estado de visibilidad del sidebar
+   */
   toggleSidebar() {
     this.sidebarVisible = !this.sidebarVisible;
   }
 
+  /**
+   * Abre un diálogo para subir una nueva foto de perfil
+   */
   changeProfilePicture() {
     console.log('Cambiar foto de perfil');
     // Aquí puedes abrir un diálogo para subir una nueva foto
   }
 
+  /**
+   * Abre la página de ajustes de perfil del usuario.
+   * Todavía no está implementado, pero puedes redirigir a la página
+   * correspondiente desde aquí.
+   */
   profileSettings() {
     console.log('Ajuste de perfil');
     // Aquí puedes redirigir a la página de ajustes de perfil
